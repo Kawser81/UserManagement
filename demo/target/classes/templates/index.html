@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>User Management Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsiveness -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f4f4f4;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+    .suggestion {
+      background: #e7f3ff;
+      padding: 15px;
+      margin: 10px 0;
+      border-left: 5px solid #007bff;
+      border-radius: 5px;
+    }
+    .search-form {
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 5px;
+      margin: 20px 0;
+    }
+    input[type="number"] {
+      padding: 10px;
+      width: 200px;
+      margin-right: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease; /* Smooth hover */
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .error {
+      color: #dc3545;
+      background: #f8d7da;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+      border: 1px solid #f5c6cb; /* Subtle border for emphasis */
+    }
+    .success { /* Placeholder for future messages */
+      color: #155724;
+      background: #d4edda;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+      border: 1px solid #c3e6cb;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap; /* Allow wrapping on small screens */
+      justify-content: center; /* Center when fewer items */
+      gap: 10px; /* Even spacing */
+      margin: 20px 0;
+    }
+    .action-btn {
+      background: #28a745;
+      padding: 15px 25px;
+      text-decoration: none;
+      color: white;
+      border-radius: 5px;
+      display: inline-block; /* Fix: Button-like block behavior */
+      transition: background 0.3s ease; /* Smooth hover */
+      role: button; /* Accessibility */
+    }
+    .action-btn:hover {
+      background: #218838;
+    }
+    /* Mobile Responsiveness */
+    @media (max-width: 600px) {
+      .actions { flex-direction: column; align-items: center; }
+      input[type="number"] { width: 100%; margin-bottom: 10px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Welcome to User Management!</h1>
+
+  <!-- Error Message -->
+  <div th:if="${error != null}" class="error" th:text="${error}"></div>
+
+  <!-- Success Message (placeholder; add to controller if needed) -->
+  <div th:if="${success != null}" class="success" th:text="${success}"></div>
+
+  <!-- Suggestions -->
+  <div class="suggestion">
+    <strong>What would you like to do?</strong><br>
+    <a th:href="@{/users}" class="action-btn" aria-label="View all users">View All Users</a>
+  </div>
+
+  <!-- Search Box -->
+  <div class="suggestion">
+    <strong>Search for a Specific User by ID:</strong><br>
+    <form th:action="@{/search}" method="get" class="search-form">
+      <input type="number" th:value="${searchId}" name="id" placeholder="Enter User ID (e.g., 1)" required min="1" aria-label="User ID search" />
+      <button type="submit">Search</button>
+    </form>
+    <small>If found, you'll see their details. Otherwise, an error will appear here.</small>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="suggestion">
+    <strong>Quick Actions:</strong><br>
+    <div class="actions">
+      <a th:href="@{/users}" class="action-btn" aria-label="List all users">List All</a>
+      <a th:href="@{/users/new}" class="action-btn" aria-label="Create a new user">Create New User</a>
+      <a th:href="@{/users}" class="action-btn" th:if="${users != null and #lists.size(users) > 0}" aria-label="Update a user via list">Update a User (via List)</a>
+      <a th:href="@{/users}" class="action-btn" th:if="${users != null and #lists.size(users) > 0}" aria-label="Delete a user via list">Delete a User (via List)</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

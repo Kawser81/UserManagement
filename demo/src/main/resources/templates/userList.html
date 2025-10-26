@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>All Users</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding-top: 20px;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 900px;
+            width: 100%;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .no-users {
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        .action-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .action-btn {
+            padding: 8px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: background 0.3s ease;
+            display: inline-block;
+        }
+        .view-btn {
+            background: #007bff;
+            color: white;
+        }
+        .view-btn:hover {
+            background: #0056b3;
+        }
+        .edit-btn {
+            background: #28a745;
+            color: white;
+        }
+        .edit-btn:hover {
+            background: #218838;
+        }
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+        .delete-btn:hover {
+            background: #c82333;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            color: #007bff;
+            text-decoration: none;
+            margin-top: 15px;
+            transition: color 0.3s ease;
+        }
+        .back-link:hover {
+            color: #0056b3;
+        }
+        /* Mobile */
+        @media (max-width: 600px) {
+            body { margin: 20px; }
+            .container { padding: 20px; }
+            th, td { padding: 8px; font-size: 14px; }
+            .action-links { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>User List</h1>
+
+    <div th:if="${users == null or #lists.isEmpty(users)}" class="no-users">
+        <p>No users found. <a th:href="@{/}">Go back to Dashboard</a> to add one.</p>
+    </div>
+
+    <table th:if="${users != null and !#lists.isEmpty(users)}">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}">N/A</td>
+            <td th:text="${user.name}">No Name</td>
+            <td th:text="${user.email}">No Email</td>
+            <td>
+                <div class="action-links">
+                    <a th:href="@{/users/{id}(id=${user.id})}" class="action-btn view-btn">View</a>
+                    <a th:href="@{/users/edit/{id}(id=${user.id})}" class="action-btn edit-btn">Edit</a>
+                    <a th:href="@{/users/delete/{id}(id=${user.id})}" class="action-btn delete-btn">Delete</a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/}" class="back-link">← Back to Dashboard</a>
+</div>
+</body>
+</html>
